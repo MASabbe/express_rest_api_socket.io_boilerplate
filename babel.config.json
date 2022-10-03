@@ -1,0 +1,15 @@
+{
+  "presets": [
+    ["@babel/preset-env", {"targets": {"node": "current"}}]
+  ],
+  "plugins": [
+    ["module-resolver", {
+      "alias": {
+        "#public": "./public",
+        "#config": "./src/config",
+        "#api": "./src/api/",
+        "#socket": "./src/socket"
+      }
+    }]
+  ]
+}

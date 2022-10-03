@@ -1,0 +1,63 @@
+{
+  "name": "express_rest_api_socket.io_boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "dev": "babel-node ./src/index.js",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && babel ./src --out-dir dist --copy-files",
+    "prod": "node ./dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MASabbe/express_rest_api_socket.io_boilerplate.git"
+  },
+  "keywords": [],
+  "author": "MAS (mas.abbe@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MASabbe/express_rest_api_socket.io_boilerplate/issues"
+  },
+  "homepage": "https://github.com/MASabbe/express_rest_api_socket.io_boilerplate#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.19.3",
+    "@babel/node": "^7.19.1",
+    "@babel/preset-env": "^7.19.3",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "jest": "^29.1.2"
+  },
+  "dependencies": {
+    "@types/express-mysql-session": "^2.1.3",
+    "axios": "^0.27.2",
+    "bluebird": "^3.7.2",
+    "compression": "^1.7.4",
+    "core-js": "^3.25.3",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "express-mysql-session": "^2.1.8",
+    "express-session": "^1.17.3",
+    "express-validation": "^4.1.0",
+    "helmet": "^6.0.0",
+    "http-status": "^1.5.3",
+    "lodash": "^4.17.21",
+    "luxon": "^3.0.4",
+    "method-override": "^3.0.0",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "passport": "^0.6.0",
+    "passport-http-bearer": "^1.0.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "redis": "^4.3.1",
+    "regenerator-runtime": "^0.13.9",
+    "serve-favicon": "^2.5.0",
+    "socket.io": "^4.5.2",
+    "uuid": "^9.0.0",
+    "winston": "^3.8.2"
+  }
+}
