@@ -5,6 +5,19 @@ export default class ecdc {
     constructor(secret) {
         this.key  = secret;
     }
+    enc(object){
+        if (typeof object !== "string") throw new Error("pass encrypt data is not an string");
+        object = JSON.parse(object);
+        let hmac = CryptoJS.HmacSHA512(JSON.stringify(object), this.key);
+        let aes = CryptoJS.AES.encrypt(JSON.stringify(object), this.key);
+        let postdata = {
+            params : hmac.toString(),
+            ApiKey : aes.toString()
+        }
+        let postvar = CryptoJS.AES.encrypt(JSON.stringify(postdata), this.key);
+        postvar = postvar.toString();
+        return postvar;
+    }
     dec(object){
         if (typeof object !== "string")throw new Error("pass encrypt data is not an string");
         let data = CryptoJS.AES.decrypt(object, this.key);
@@ -19,19 +32,6 @@ export default class ecdc {
             throw new Error("invalid param. api key did not match");
         }
         return param;
-    }
-    enc(object){
-        if (typeof object !== "string") throw new Error("pass encrypt data is not an string");
-        object = JSON.parse(object);
-        let hmac = CryptoJS.HmacSHA512(JSON.stringify(object), this.key);
-        let aes = CryptoJS.AES.encrypt(JSON.stringify(object), this.key);
-        let postdata = {
-            params : hmac.toString(),
-            ApiKey : aes.toString()
-        }
-        let postvar = CryptoJS.AES.encrypt(JSON.stringify(postdata), this.key);
-        postvar = postvar.toString();
-        return postvar;
     }
     passEnc(pass, passKey){
         if (typeof pass !== "string") throw new Error("pass encrypt data is not an string");
@@ -56,12 +56,13 @@ export default class ecdc {
         let param = jsondata.ApiKey;
         let apiKey = jsondata.params;
         param = CryptoJS.AES.decrypt(param, newKey);
-        param = param.toString(CryptoJS.enc.Utf8);
+        param = param.toString(CryptoJS.enc.Utf8).replace(/"/gi, "");
         let hmac = CryptoJS.HmacSHA512(param,newKey);
         hmac = hmac.toString();
         if (apiKey !== hmac){
             throw new Error("invalid param. api key did not match");
         }
+
         return param;
     }
     pinEnc(pin){

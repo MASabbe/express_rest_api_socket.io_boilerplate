@@ -9,12 +9,13 @@ export default function (io,socket) {
     socket.use(function ([event, data, callback], next) {
         let res = {};
         let eventWithoutSession = [
-            'signIn',
-            'register',
-            'forgotPassword',
+            'auth:signIn',
+            'auth:register',
+            'auth:forgot:passowrd',
         ]
         let eventWithSession = [
-            'user',
+            'auth:update:passowrd',
+            'user:profile',
         ]
         let registeredEvent = ["serverTime",...eventWithoutSession,...eventWithSession];
         let checkValidEvent = registeredEvent.includes(event);

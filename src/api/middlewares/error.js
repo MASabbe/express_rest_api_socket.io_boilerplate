@@ -28,11 +28,12 @@ export const handler = function (err, req, res, next) {
 export const converter = function (err,req, res, next) {
     let convertedError = err;
     if (err instanceof expressValidation.ValidationError) {
+        console.log(err.details)
         convertedError = new APIError({
             message: 'Validation Error',
             errors: err.errors,
             status: err.status,
-            stack: err.stack,
+            stack: err.details,
         });
     } else if (!(err instanceof APIError)) {
         convertedError = new APIError({

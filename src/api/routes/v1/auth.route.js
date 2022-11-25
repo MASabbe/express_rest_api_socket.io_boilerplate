@@ -81,6 +81,5 @@ router.route('/signIn').post(validate(login), controller.login);
 router.route('/refresh-token').post(validate(refresh), controller.refresh);
 router.route('/send-password-reset').post(validate(sendPasswordReset), controller.sendPasswordReset);
 router.route('/reset-password').post(validate(passwordReset), controller.resetPassword);
-router.route('/encrypt').post(validate(encrypt), controller.encrypt);
 router.route('/admin-otp').post(validate(adminOtp), controller.adminOtp);
 export default router;

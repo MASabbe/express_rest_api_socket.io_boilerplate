@@ -1,13 +1,13 @@
 import httpStatus from 'http-status';
 import { omit } from 'lodash';
-import User from '../models/user.model';
+import * as adminModel from '../models/admin.model';
 /**
  * Load user and append to req.
  * @public
  */
 export async function load(req, res, next, id){
     try {
-        const user = await User.get(id);
+        const user = await adminModel.findById(id);
         req.locals = { user };
         return next();
     } catch (error) {
@@ -19,14 +19,14 @@ export async function load(req, res, next, id){
  * @public
  */
 export function get(req, res) {
-    return res.json(req.locals.user.transform())
+    return res.json(adminModel.transform(req.locals.user));
 }
 /**
  * Get logged in user info
  * @public
  */
 export function loggedIn(req, res) {
-    return res.json(req.locals.user.transform())
+    return res.json(adminModel.transform(req.user));
 }
 /**
  * Create new user
@@ -80,8 +80,8 @@ export async function update(req, res, next) {
  */
 export async function list(req, res, next) {
     try {
-        const users = await User.list(req.query);
-        const transformedUsers = users.map((user) => user.transform());
+        const users = await adminModel.list(req.query);
+        const transformedUsers = users.map((user) => adminModel.transform(user));
         res.json(transformedUsers);
     } catch (error) {
         next(error);

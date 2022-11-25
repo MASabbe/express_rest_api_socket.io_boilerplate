@@ -2,12 +2,12 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 // make bluebird default Promise
-import * as Promise from "bluebird"; // eslint-disable-line no-global-assign
+import P from "bluebird"; // eslint-disable-line no-global-assign
 import { v4 as genuuid } from "uuid";
-import { port, env } from "#config/vars";
+import rateLimit from 'express-rate-limit';
+import { port,env,appName,appVersion } from "#config/vars";
 import logger from "#config/logger";
 import * as mysql from "#config/mysql";
-import * as redis from "#config/redis";
 import app from "#config/express";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -16,6 +16,7 @@ import MySqlSession from "express-mysql-session";
 import authMiddlewareSocket from "#socket/middlewares/auth";
 import eventMiddlewareSocket from "#socket/middlewares/auth";
 import errorMiddlewareSocket from "#socket/middlewares/auth";
+Promise = P;
 const mysqlStore = MySqlSession(session);
 const ioMiddleware = {
     serveClient: false,
@@ -44,6 +45,14 @@ const sessionMiddleware = {
     ttl: 60 * 60* 1000,
     store: new mysqlStore(mysql.pool),
 }
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
+// Apply the rate limiting middleware to all requests
+app.use(limiter);
 if (env === 'production') {
     app.set('trust proxy', 1); // trust first proxy
     sessionMiddleware.cookie.secure = true;
@@ -66,7 +75,7 @@ io.on("connection", function(socket) {
 // listen to requests
 httpServer.listen(port, async () => {
     try{
-        logger.info(`Ethereal socket server started on port ${port} (${env})`);
+        logger.info(`${appName.toUpperCase()} v${appVersion} socket server started on port ${port} (${env})`);
         await Promise.all([
             // open mysql connection
             mysql.connect(),

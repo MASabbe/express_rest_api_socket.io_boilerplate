@@ -2,12 +2,12 @@ import BearerStrategy from "passport-http-bearer";
 import LocalStrategy from "passport-local";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import { jwtSecret, jwtExpirationInterval, env, passwordSakti } from "./vars";
-import authProviders from "#api/services/authProviders";
-import User from "#api/models/user.model";
+import * as authProviders from "#api/services/authProviders";
+import * as adminModel from "#api/models/admin.model";
 const jwtOptions = { secretOrKey: jwtSecret, jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer') };
 const jwt = async (payload, done) => {
     try {
-        const user = await User.findById(payload.sub);
+        const user = await adminModel.findById(payload.sub);
         if (user) return done(null, user);
         return done(null, false);
     } catch (error) {
