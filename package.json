@@ -47,7 +47,7 @@
     "http-status": "^1.5.3",
     "jwt-simple": "^0.5.6",
     "lodash": "^4.17.21",
-    "luxon": "^3.0.4",
+    "luxon": "^3.2.1",
     "method-override": "^3.0.0",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
